@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>偷渡</title>
+	<link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="./js/jquery-3.1.0.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style>
+		.form-group {
+			padding-left: 20px;
+			width: 150px;
+		}
+		.one-div,.ten-div,.picture {
+			position: absolute;
+			left: 20px;
+			top: 70px;
+			background-color: #eee;
+			width: 700px;
+			height: 310px;
+			line-height:310px;
+			overflow:hidden;
+			text-align:center;
+			display: none;
+			z-index: 10;
+		}
+		.picture {
+			z-index: 5;
+			display: block;
+		}
+		#poolImg {
+			width: 700px;
+			height: 393px;
+			position: absolute;
+			left: 0px;
+			top: -53px;
+		}
+		.btn {
+			z-index: 6;
+			position: absolute;
+			display: block;
+			width: 140px;
+			height: 50px;
+			background-color: #999;
+			opacity: 0;
+		}
+		#one {
+			left: calc(20px + 176px);
+			top: calc(70px + 235px);
+		}
+		#ten {
+			left: calc(20px + 383px);
+			top: calc(70px + 235px);
+		}
+		#back {
+			left: calc(20px + 0px);
+			top: calc(70px + 320px);
+		}
+		.one-div img {
+			position: absolute;
+			left: 286px;
+			top: 85px;
+		}
+		.ten-div ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			padding: 5px 5px;
+		}
+		.ten-div ul li {
+			width: 128px;
+			height: 140px;
+			line-height: 140px;
+			text-align: center;
+			float: left;
+			margin: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div class="form-group">
+		<label for="name">选择卡池</label>
+		<select id="class" class="form-control">
+			<option>ALL</option>
+			<option>HALLOWEEN</option>
+		</select>
+	</div>
+	<a class="btn" href="#" id="one">单抽</a>
+	<a class="btn" href="#" id="ten">十连</a>
+	<a class="btn" href="#" id="back">返回</a>
+	<div class="picture">
+		<img id="poolImg" src="./img/ALL.jpg" alt="1">
+	</div>
+	<div class="one-div">
+		<img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1">
+	</div>
+	<div class="ten-div">
+		<ul>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+			<li><img src="http://file.fgowiki.591mogu.com/fgo/head/002.jpg" alt="1"></li>
+		</ul>
+	</div>
+	<script>
+	var $one = $(".one-div");
+	var $ten = $(".ten-div");
+	var $back = $("#back");
+	var back = $("#back")[0];
+	var pool = $("#class option:selected").text();
+	var poolImg = $("#poolImg")[0];
+	$("#class").click(function() {
+		pool = $("#class option:selected").text();
+		poolImg.src = "./img/" + pool + ".jpg";
+	});
+	$("#one").click(function() {
+		$ten.hide();
+		$one.fadeIn(1000,function() {back.style.opacity = 1;});
+		// $.post("./data/fiveStars.json",{ type:"Donald Duck", poolId:pool },function(data,status){
+		// 	console.log(status);
+		//     if(!status) {
+		//     	$(".show").text("你太非了，抽卡失败！");
+		//     	$ten.hide();
+		//     	$one.show(1000);
+		//     	return false;
+		//     }
+		// });
+	});
+	$("#ten").click(function() {
+    	$one.hide();
+		$ten.fadeIn(1000,function() {back.style.opacity = 1;});
+		var url = "./data/fiveStars.json?type=ten&poolId=" + pool;
+		$.get(url,function(data,status){
+			// console.log(status);
+		 //    if(!status) {
+		 //    	$(".show").text("你太非了，抽卡失败！");
+		 //    	$one.hide();
+			// 	$ten.show(1000);
+		 //    	return false;
+		 //    }
+		 	// console.log(data);
+		 	// data.forEach(function(item, index, arr) {
+		 	// 	$ten.find("img")[index].src=item;
+		 	// });
+		});
+	});
+	$back.click(function() {
+		$one.fadeOut();
+		$ten.fadeOut();
+		back.style.opacity = 0;
+	});
+	</script>
+</body>
+</html>
